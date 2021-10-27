@@ -117,6 +117,46 @@ ga.ga_original_referral_channel,
 ga.ga_original_referral_source,
 ga.ga_original_referral_medium,
 ga.ga_original_referral_campaign,
+ga.politics_pvs_30days,
+ga.opinion_pvs_30days,
+ga.lifestyle_pvs_30days,
+ga.games_pvs_30days,
+ga.national_pvs_30days,
+ga.business_pvs_30days,
+ga.world_pvs_30days,
+ga.us_policy_pvs_30days,
+ga.health_pvs_30days,
+ga.national_security_pvs_30days,
+ga.local_pvs_30days,
+ga.entertainment_pvs_30days,
+ga.technology_pvs_30days,
+ga.climate_pvs_30days,
+ga.investigations_pvs_30days,
+ga.history_pvs_30days,
+ga.sports_pvs_30days,
+ga.food_pvs_30days,
+ga.weather_pvs_30days,
+ga.politics_pvs_7days,
+ga.opinion_pvs_7days,
+ga.lifestyle_pvs_7days,
+ga.games_pvs_7days,
+ga.national_pvs_7days,
+ga.business_pvs_7days,
+ga.world_pvs_7days,
+ga.us_policy_pvs_7days,
+ga.health_pvs_7days,
+ga.national_security_pvs_7days,
+ga.local_pvs_7days,
+ga.entertainment_pvs_7days,
+ga.technology_pvs_7days,
+ga.climate_pvs_7days,
+ga.investigations_pvs_7days,
+ga.history_pvs_7days,
+ga.sports_pvs_7days,
+ga.food_pvs_7days,
+ga.weather_pvs_7days,
+ga.gifted_articles_30days,
+ga.gifted_articles_7days,
 COALESCE(ga.ga_engagement_segment,0) - COALESCE(ga.ga_prev_engagement_segment,0) as ga_engagement_segment_30_day_delta
 FROM 
 c360_map 
@@ -422,59 +462,80 @@ INNER JOIN
             group by hits_customdimensions30
     ) us7 ON u.u_autoincrementid = us7.hits_customdimensions30_7days
 
+    --pageviews per section
     LEFT JOIN
     (
-SELECT hits_customdimensions30, 
-SUM(CASE WHEN hits_customdimensions2 = 'politics' THEN 1 ELSE 0 END) as politics_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'opinions' THEN 1 ELSE 0 END) as opinion_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'lifestyle' THEN 1 ELSE 0 END) as lifestyle_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 like 'video-games%' THEN 1 ELSE 0 END) as games_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'national' THEN 1 ELSE 0 END) as national_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'business' THEN 1 ELSE 0 END) as business_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'world' THEN 1 ELSE 0 END) as world_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'us-policy' THEN 1 ELSE 0 END) as us_policy_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'health' THEN 1 ELSE 0 END) as health_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'national-security' THEN 1 ELSE 0 END) as national_security_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'local' THEN 1 ELSE 0 END) as local_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'entertainment' THEN 1 ELSE 0 END) as entertainment_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'technology' THEN 1 ELSE 0 END) as technology_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 like 'climate%' THEN 1 ELSE 0 END) as climate_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'investigations' THEN 1 ELSE 0 END) as investigations_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'history' THEN 1 ELSE 0 END) as history_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'sports' THEN 1 ELSE 0 END) as sports_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'food' or hits_customdimensions2 = 'foodweb' or hits_customdimensions2 = 'lifestyle/food/voraciously' or hits_customdimensions2 = 'lifestyle/food' THEN 1 ELSE 0 END) as food_pvs_30days,
-SUM(CASE WHEN hits_customdimensions2 = 'weather' THEN 1 ELSE 0 END) as weather_pvs_30days
-FROM ga_flat
-WHERE dt >= REPLACE(DATE_SUB(CURRENT_DATE,30),'-','')
-group by hits_customdimensions30
+        SELECT hits_customdimensions30, 
+        SUM(CASE WHEN hits_customdimensions2 = 'politics' THEN 1 ELSE 0 END) as politics_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'opinions' THEN 1 ELSE 0 END) as opinion_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'lifestyle' THEN 1 ELSE 0 END) as lifestyle_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 like 'video-games%' THEN 1 ELSE 0 END) as games_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'national' THEN 1 ELSE 0 END) as national_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'business' THEN 1 ELSE 0 END) as business_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'world' THEN 1 ELSE 0 END) as world_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'us-policy' THEN 1 ELSE 0 END) as us_policy_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'health' THEN 1 ELSE 0 END) as health_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'national-security' THEN 1 ELSE 0 END) as national_security_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'local' THEN 1 ELSE 0 END) as local_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'entertainment' THEN 1 ELSE 0 END) as entertainment_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'technology' THEN 1 ELSE 0 END) as technology_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 like 'climate%' THEN 1 ELSE 0 END) as climate_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'investigations' THEN 1 ELSE 0 END) as investigations_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'history' THEN 1 ELSE 0 END) as history_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'sports' THEN 1 ELSE 0 END) as sports_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'food' or hits_customdimensions2 = 'foodweb' or hits_customdimensions2 = 'lifestyle/food/voraciously' or hits_customdimensions2 = 'lifestyle/food' THEN 1 ELSE 0 END) as food_pvs_30days,
+        SUM(CASE WHEN hits_customdimensions2 = 'weather' THEN 1 ELSE 0 END) as weather_pvs_30days
+        FROM ga_flat
+        WHERE dt >= REPLACE(DATE_SUB(CURRENT_DATE,30),'-','')
+        group by hits_customdimensions30
     ) pv30 ON u.u_autoincrementid = pv30.hits_customdimensions30
 
     LEFT JOIN
     (
-SELECT hits_customdimensions30, 
-SUM(CASE WHEN hits_customdimensions2 = 'politics' THEN 1 ELSE 0 END) as politics_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'opinions' THEN 1 ELSE 0 END) as opinion_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'lifestyle' THEN 1 ELSE 0 END) as lifestyle_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 like 'video-games%' THEN 1 ELSE 0 END) as games_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'national' THEN 1 ELSE 0 END) as national_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'business' THEN 1 ELSE 0 END) as business_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'world' THEN 1 ELSE 0 END) as world_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'us-policy' THEN 1 ELSE 0 END) as us_policy_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'health' THEN 1 ELSE 0 END) as health_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'national-security' THEN 1 ELSE 0 END) as national_security_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'local' THEN 1 ELSE 0 END) as local_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'entertainment' THEN 1 ELSE 0 END) as entertainment_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'technology' THEN 1 ELSE 0 END) as technology_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 like 'climate%' THEN 1 ELSE 0 END) as climate_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'investigations' THEN 1 ELSE 0 END) as investigations_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'history' THEN 1 ELSE 0 END) as history_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'sports' THEN 1 ELSE 0 END) as sports_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'food' or hits_customdimensions2 = 'foodweb' or hits_customdimensions2 = 'lifestyle/food/voraciously' or hits_customdimensions2 = 'lifestyle/food' THEN 1 ELSE 0 END) as food_pvs_7days,
-SUM(CASE WHEN hits_customdimensions2 = 'weather' THEN 1 ELSE 0 END) as weather_pvs_7days
-FROM ga_flat
-WHERE dt >= REPLACE(DATE_SUB(CURRENT_DATE,7),'-','')
-group by hits_customdimensions30
+        SELECT hits_customdimensions30, 
+        SUM(CASE WHEN hits_customdimensions2 = 'politics' THEN 1 ELSE 0 END) as politics_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'opinions' THEN 1 ELSE 0 END) as opinion_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'lifestyle' THEN 1 ELSE 0 END) as lifestyle_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 like 'video-games%' THEN 1 ELSE 0 END) as games_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'national' THEN 1 ELSE 0 END) as national_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'business' THEN 1 ELSE 0 END) as business_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'world' THEN 1 ELSE 0 END) as world_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'us-policy' THEN 1 ELSE 0 END) as us_policy_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'health' THEN 1 ELSE 0 END) as health_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'national-security' THEN 1 ELSE 0 END) as national_security_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'local' THEN 1 ELSE 0 END) as local_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'entertainment' THEN 1 ELSE 0 END) as entertainment_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'technology' THEN 1 ELSE 0 END) as technology_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 like 'climate%' THEN 1 ELSE 0 END) as climate_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'investigations' THEN 1 ELSE 0 END) as investigations_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'history' THEN 1 ELSE 0 END) as history_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'sports' THEN 1 ELSE 0 END) as sports_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'food' or hits_customdimensions2 = 'foodweb' or hits_customdimensions2 = 'lifestyle/food/voraciously' or hits_customdimensions2 = 'lifestyle/food' THEN 1 ELSE 0 END) as food_pvs_7days,
+        SUM(CASE WHEN hits_customdimensions2 = 'weather' THEN 1 ELSE 0 END) as weather_pvs_7days
+        FROM ga_flat
+        WHERE dt >= REPLACE(DATE_SUB(CURRENT_DATE,7),'-','')
+        group by hits_customdimensions30
     ) pv7 ON u.u_autoincrementid = pv7.hits_customdimensions30
+    
+    --gifting articles
+    LEFT JOIN
+    (
+        SELECT hits_customdimensions30, 
+        SUM(CASE WHEN hits_eventinfo_eventaction = 'profile-gift-article' and hits_eventinfo_eventlabel like 'gift-article-share%' THEN 1 ELSE 0 END) as gifted_articles_30days
+        FROM ga_flat
+        WHERE dt >= REPLACE(DATE_SUB(CURRENT_DATE,30),'-','')
+        group by hits_customdimensions30
+    ) gifts30 ON u.u_autoincrementid = gifts30.hits_customdimensions30
+
+    LEFT JOIN
+    (
+        SELECT hits_customdimensions30, 
+        SUM(CASE WHEN hits_eventinfo_eventaction = 'profile-gift-article' and hits_eventinfo_eventlabel like 'gift-article-share%' THEN 1 ELSE 0 END) as gifted_articles_7days
+        FROM ga_flat
+        WHERE dt >= REPLACE(DATE_SUB(CURRENT_DATE,7),'-','')
+        group by hits_customdimensions30
+    ) gifts7 ON u.u_autoincrementid = gifts7.hits_customdimensions30
+
 
     --Engagement Segment
     LEFT JOIN
